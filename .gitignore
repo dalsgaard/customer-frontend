@@ -3,3 +3,4 @@ dist/
 .env
 .env.production
 openapi/types.ts
+openapi/customer.oas.yaml
