@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "@shoelace-style/shoelace": "^2.0.0",
+    "@tanstack/react-query": "^5.0.0",
     "openapi-fetch": "^0.13.0",
+    "openapi-react-query": "^0.2.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^6.0.0"

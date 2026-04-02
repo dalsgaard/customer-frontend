@@ -1,63 +1,36 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import { api } from "../api/client.js";
-import type { components } from "../../openapi/types.js";
-
-type Customer = components["schemas"]["Customer"];
+import { useQueryClient } from "@tanstack/react-query";
+import { $api } from "../api/client.js";
 
 export default function CustomersLayout() {
   const navigate = useNavigate();
-  const [customers, setCustomers] = useState<Customer[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const queryClient = useQueryClient();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [saving, setSaving] = useState(false);
 
-  useEffect(() => {
-    loadCustomers();
-  }, []);
+  const { data, isLoading, error } = $api.useQuery("get", "/customers");
 
-  async function loadCustomers() {
-    setLoading(true);
-    setError(null);
-    const { data, error: err } = await api.GET("/customers");
-    if (err) {
-      setError("Failed to load customers.");
-    } else {
-      setCustomers(data.customers);
-    }
-    setLoading(false);
-  }
-
-  async function handleCreate(e: React.FormEvent) {
-    e.preventDefault();
-    setSaving(true);
-    const { data, error: err } = await api.POST("/customers", {
-      body: { name, email },
-    });
-    if (err) {
-      setError("Failed to create customer.");
-    } else {
-      setCustomers((prev) => [...prev, data]);
+  const createMutation = $api.useMutation("post", "/customers", {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["get", "/customers"] });
       setDialogOpen(false);
       setName("");
       setEmail("");
-    }
-    setSaving(false);
-  }
+    },
+  });
 
-  async function handleDelete(id: string) {
-    const { error: err } = await api.DELETE("/customers/{id}", {
-      params: { path: { id } },
-    });
-    if (err) {
-      setError("Failed to delete customer.");
-    } else {
-      setCustomers((prev) => prev.filter((c) => c.id !== id));
+  const deleteMutation = $api.useMutation("delete", "/customers/{id}", {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["get", "/customers"] });
       navigate("/customers");
-    }
+    },
+  });
+
+  function handleCreate(e: React.FormEvent) {
+    e.preventDefault();
+    createMutation.mutate({ body: { name, email } });
   }
 
   return (
@@ -68,15 +41,15 @@ export default function CustomersLayout() {
           <button onClick={() => setDialogOpen(true)}>Add</button>
         </div>
 
-        {error && <p style={{ color: "red", marginBottom: "1rem" }}>{error}</p>}
+        {error && <p style={{ color: "red", marginBottom: "1rem" }}>Failed to load customers.</p>}
 
-        {loading ? (
+        {isLoading ? (
           <p>Loading…</p>
-        ) : customers.length === 0 ? (
+        ) : data?.customers.length === 0 ? (
           <p>No customers yet.</p>
         ) : (
           <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-            {customers.map((c) => (
+            {data?.customers.map((c) => (
               <li
                 key={c.id}
                 onClick={() => navigate(`/customers/${c.id}`)}
@@ -89,7 +62,7 @@ export default function CustomersLayout() {
         )}
       </div>
 
-      <Outlet context={{ onDelete: handleDelete }} />
+      <Outlet context={{ onDelete: (id: string) => deleteMutation.mutate({ params: { path: { id } } }) }} />
 
       {dialogOpen && (
         <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.4)", display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -102,7 +75,9 @@ export default function CustomersLayout() {
             <input placeholder="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
             <div style={{ display: "flex", gap: "0.5rem", justifyContent: "flex-end" }}>
               <button type="button" onClick={() => setDialogOpen(false)}>Cancel</button>
-              <button type="submit" disabled={saving}>{saving ? "Saving…" : "Save"}</button>
+              <button type="submit" disabled={createMutation.isPending}>
+                {createMutation.isPending ? "Saving…" : "Save"}
+              </button>
             </div>
           </form>
         </div>

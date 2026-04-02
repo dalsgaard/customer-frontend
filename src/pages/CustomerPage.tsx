@@ -1,35 +1,21 @@
-import { useState, useEffect } from "react";
 import { useParams, useOutletContext, useNavigate } from "react-router-dom";
-import { api } from "../api/client.js";
-import type { components } from "../../openapi/types.js";
+import { $api } from "../api/client.js";
 
-type Customer = components["schemas"]["Customer"];
 type OutletContext = { onDelete: (id: string) => void };
 
 export default function CustomerPage() {
   const { id } = useParams<{ id: string }>();
   const { onDelete } = useOutletContext<OutletContext>();
   const navigate = useNavigate();
-  const [customer, setCustomer] = useState<Customer | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (!id) return;
-    setLoading(true);
-    setCustomer(null);
-    api.GET("/customers/{id}", { params: { path: { id } } }).then(({ data, error: err }) => {
-      if (err) {
-        setError("Failed to load customer.");
-      } else {
-        setCustomer(data);
-      }
-      setLoading(false);
-    });
-  }, [id]);
+  const { data: customer, isLoading, error } = $api.useQuery(
+    "get",
+    "/customers/{id}",
+    { params: { path: { id: id! } } }
+  );
 
-  if (loading) return <p>Loading…</p>;
-  if (error) return <p style={{ color: "red" }}>{error}</p>;
+  if (isLoading) return <p>Loading…</p>;
+  if (error) return <p style={{ color: "red" }}>Failed to load customer.</p>;
   if (!customer) return null;
 
   return (
