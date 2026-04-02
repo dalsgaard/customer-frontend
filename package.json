@@ -6,7 +6,8 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "gen:types": "bash scripts/gen-types.sh"
+    "gen:types": "bash scripts/gen-types.sh",
+    "format": "prettier --write src"
   },
   "dependencies": {
     "@shoelace-style/shoelace": "^2.0.0",
@@ -22,6 +23,7 @@
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^5.0.0",
     "openapi-typescript": "^7.0.0",
+    "prettier": "^3.0.0",
     "typescript": "^5.4.0",
     "vite": "^8.0.3",
     "vite-plugin-static-copy": "^4.0.0"
