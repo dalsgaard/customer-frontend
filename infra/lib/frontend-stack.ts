@@ -40,6 +40,8 @@ export class FrontendStack extends cdk.Stack {
       destinationBucket: bucket,
       distribution,
       distributionPaths: ["/*"],
+      memoryLimit: 1024,
+      ephemeralStorageSize: cdk.Size.mebibytes(1024),
     });
 
     new cdk.CfnOutput(this, "URL", {

@@ -3,4 +3,8 @@ dist/
 .env
 .env.production
 openapi/types.ts
+openapi/types.js
 openapi/customer.oas.yaml
+src/**/*.js
+infra/cdk.out/
+infra/package-lock.json
