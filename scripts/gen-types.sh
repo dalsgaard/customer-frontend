@@ -5,8 +5,13 @@ ACCOUNT=$(aws sts get-caller-identity --query Account --output text)
 REGION="eu-north-1"
 BUCKET="openapi-specs-${ACCOUNT}-${REGION}"
 
-aws s3 cp "s3://${BUCKET}/customer-service/customer.oas.yaml" openapi/customer.oas.yaml
-openapi-typescript openapi/customer.oas.yaml -o openapi/types.ts
+aws s3 cp "s3://${BUCKET}/customer-bff/customer-bff.oas.yaml" openapi/customer-bff.oas.yaml
+openapi-typescript openapi/customer-bff.oas.yaml -o openapi/types.ts
 
-API_ID=$(grep 'default:' openapi/customer.oas.yaml | head -1 | awk '{print $2}')
-echo "VITE_API_BASE_URL=https://${API_ID}.execute-api.${REGION}.amazonaws.com" > .env.production
+BFF_URL=$(aws cloudformation describe-stacks \
+  --stack-name CustomerBffStack \
+  --region "$REGION" \
+  --query 'Stacks[0].Outputs[?OutputKey==`ApiUrl`].OutputValue' \
+  --output text)
+
+echo "VITE_API_BASE_URL=${BFF_URL}" > .env.production

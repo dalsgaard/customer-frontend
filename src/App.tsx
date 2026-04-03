@@ -1,23 +1,29 @@
-import { Routes, Route, Link } from 'react-router-dom';
-import HomePage from './pages/HomePage.js';
-import CustomersLayout from './pages/CustomersLayout.js';
-import CustomerPage from './pages/CustomerPage.js';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import LoginPage from './pages/LoginPage.js';
+import RegisterPage from './pages/RegisterPage.js';
+import ProfilePage from './pages/ProfilePage.js';
 import NotFoundPage from './pages/NotFoundPage.js';
+
+function ProtectedRoute({ children }: { children: React.ReactNode }) {
+  const token = localStorage.getItem('accessToken');
+  return token ? <>{children}</> : <Navigate to="/login" replace />;
+}
 
 export default function App() {
   return (
-    <div style={{ maxWidth: 900, margin: '0 auto', padding: '2rem 1rem' }}>
-      <nav style={{ display: 'flex', gap: '1rem', marginBottom: '2rem' }}>
-        <Link to="/">Home</Link>
-        <Link to="/customers">Customers</Link>
-      </nav>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/customers" element={<CustomersLayout />}>
-          <Route path=":id" element={<CustomerPage />} />
-        </Route>
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
-    </div>
+    <Routes>
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoute>
+            <ProfilePage />
+          </ProtectedRoute>
+        }
+      />
+      <Route path="/" element={<Navigate to="/profile" replace />} />
+      <Route path="*" element={<NotFoundPage />} />
+    </Routes>
   );
 }
