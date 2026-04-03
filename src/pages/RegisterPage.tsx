@@ -30,30 +30,41 @@ export default function RegisterPage() {
   }
 
   return (
-    <div style={{ maxWidth: 360, margin: '4rem auto' }}>
-      <h1 style={{ marginBottom: '1.5rem' }}>Register</h1>
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-        <input
-          placeholder="Customer ID (UUID)"
-          value={customerId}
-          onChange={(e) => setCustomerId(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password (min 8 chars, upper, lower, digit)"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        {error && <p style={{ color: 'red', margin: 0 }}>{error}</p>}
-        <button type="submit" disabled={loading}>
-          {loading ? 'Registering…' : 'Register'}
-        </button>
-      </form>
-      <p style={{ marginTop: '1rem' }}>
-        Already have an account? <Link to="/login">Login</Link>
-      </p>
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="w-full max-w-sm bg-white rounded-xl shadow p-8">
+        <h1 className="text-2xl font-semibold mb-6">Register</h1>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+          <input
+            placeholder="Customer ID (UUID)"
+            value={customerId}
+            onChange={(e) => setCustomerId(e.target.value)}
+            required
+            className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <input
+            type="password"
+            placeholder="Password (min 8 chars, upper, lower, digit)"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className="border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          {error && <p className="text-red-600 text-sm">{error}</p>}
+          <button
+            type="submit"
+            disabled={loading}
+            className="bg-blue-600 text-white rounded-lg py-2 text-sm font-medium hover:bg-blue-700 disabled:opacity-50 cursor-pointer"
+          >
+            {loading ? 'Registering…' : 'Register'}
+          </button>
+        </form>
+        <p className="mt-4 text-sm text-gray-600">
+          Already have an account?{' '}
+          <Link to="/login" className="text-blue-600 hover:underline">
+            Login
+          </Link>
+        </p>
+      </div>
     </div>
   );
 }

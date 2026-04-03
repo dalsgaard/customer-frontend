@@ -1,3 +1,4 @@
+import './index.css';
 import { setBasePath } from '@shoelace-style/shoelace/dist/utilities/base-path.js';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
