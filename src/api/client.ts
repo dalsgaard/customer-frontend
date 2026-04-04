@@ -14,6 +14,15 @@ client.use({
     }
     return request;
   },
+  onResponse({ response }) {
+    if (response.status === 401) {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('idToken');
+      localStorage.removeItem('refreshToken');
+      window.location.href = '/login';
+    }
+    return response;
+  },
 });
 
 export const $api = createQueryClient(client);
