@@ -1,12 +1,14 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
+import AppLayout from './components/AppLayout.js';
 import LoginPage from './pages/LoginPage.js';
 import RegisterPage from './pages/RegisterPage.js';
+import HomePage from './pages/HomePage.js';
 import ProfilePage from './pages/ProfilePage.js';
 import NotFoundPage from './pages/NotFoundPage.js';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const token = localStorage.getItem('accessToken');
-  return token ? <>{children}</> : <Navigate to="/login" replace />;
+  return token ? <AppLayout>{children}</AppLayout> : <Navigate to="/login" replace />;
 }
 
 export default function App() {
@@ -15,6 +17,14 @@ export default function App() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route
+        path="/home"
+        element={
+          <ProtectedRoute>
+            <HomePage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path="/profile"
         element={
           <ProtectedRoute>
@@ -22,7 +32,7 @@ export default function App() {
           </ProtectedRoute>
         }
       />
-      <Route path="/" element={<Navigate to="/profile" replace />} />
+      <Route path="/" element={<Navigate to="/home" replace />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
