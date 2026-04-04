@@ -32,6 +32,12 @@ export default function CardPage() {
             <dt className="text-gray-500 font-medium">Expires</dt>
             <dd className="text-gray-900">{card.expiryMonth.toString().padStart(2, '0')}/{card.expiryYear}</dd>
           </div>
+          {card.accountName && (
+            <div>
+              <dt className="text-gray-500 font-medium">Account</dt>
+              <dd className="text-gray-900">{card.accountName}</dd>
+            </div>
+          )}
           <div>
             <dt className="text-gray-500 font-medium">Product</dt>
             <dd className="text-gray-900">{card.product.name}</dd>

@@ -24,7 +24,9 @@ export default function CardsPage() {
                   <span className="font-medium text-gray-900">{card.cardholderName}</span>
                   <span className="text-sm text-gray-500">{card.product.network} {card.product.type}</span>
                 </div>
-                <p className="text-sm text-gray-400 mt-1">•••• {card.last4}</p>
+                <p className="text-sm text-gray-400 mt-1">
+                  •••• {card.last4}{card.accountName ? ` · ${card.accountName}` : ''}
+                </p>
               </Link>
             </li>
           ))}
