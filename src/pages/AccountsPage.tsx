@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { $api } from '../api/client.js';
 
 export default function AccountsPage() {
@@ -14,15 +15,17 @@ export default function AccountsPage() {
       ) : (
         <ul className="space-y-2">
           {accounts?.map((account) => (
-            <li
-              key={account.id}
-              className="bg-white border border-gray-200 rounded-xl p-4"
-            >
-              <div className="flex justify-between items-center">
-                <span className="font-medium text-gray-900">{account.name}</span>
-                <span className="text-sm text-gray-500">{account.currency}</span>
-              </div>
-              <p className="text-sm text-gray-400 font-mono mt-1">{account.iban}</p>
+            <li key={account.id}>
+              <Link
+                to={`/accounts/${account.id}`}
+                className="block bg-white border border-gray-200 rounded-xl p-4 hover:border-blue-300 hover:bg-blue-50 transition-colors"
+              >
+                <div className="flex justify-between items-center">
+                  <span className="font-medium text-gray-900">{account.name}</span>
+                  <span className="text-sm text-gray-500">{account.currency}</span>
+                </div>
+                <p className="text-sm text-gray-400 font-mono mt-1">{account.iban}</p>
+              </Link>
             </li>
           ))}
         </ul>

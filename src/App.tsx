@@ -4,6 +4,7 @@ import LoginPage from './pages/LoginPage.js';
 import RegisterPage from './pages/RegisterPage.js';
 import HomePage from './pages/HomePage.js';
 import AccountsPage from './pages/AccountsPage.js';
+import AccountPage from './pages/AccountPage.js';
 import ProfilePage from './pages/ProfilePage.js';
 import NotFoundPage from './pages/NotFoundPage.js';
 
@@ -30,6 +31,14 @@ export default function App() {
         element={
           <ProtectedRoute>
             <AccountsPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/accounts/:id"
+        element={
+          <ProtectedRoute>
+            <AccountPage />
           </ProtectedRoute>
         }
       />
