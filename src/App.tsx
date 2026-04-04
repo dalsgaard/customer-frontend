@@ -3,6 +3,7 @@ import AppLayout from './components/AppLayout.js';
 import LoginPage from './pages/LoginPage.js';
 import RegisterPage from './pages/RegisterPage.js';
 import HomePage from './pages/HomePage.js';
+import AccountsPage from './pages/AccountsPage.js';
 import ProfilePage from './pages/ProfilePage.js';
 import NotFoundPage from './pages/NotFoundPage.js';
 
@@ -21,6 +22,14 @@ export default function App() {
         element={
           <ProtectedRoute>
             <HomePage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/accounts"
+        element={
+          <ProtectedRoute>
+            <AccountsPage />
           </ProtectedRoute>
         }
       />
