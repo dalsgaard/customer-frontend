@@ -5,6 +5,8 @@ import RegisterPage from './pages/RegisterPage.js';
 import HomePage from './pages/HomePage.js';
 import AccountsPage from './pages/AccountsPage.js';
 import AccountPage from './pages/AccountPage.js';
+import CardsPage from './pages/CardsPage.js';
+import CardPage from './pages/CardPage.js';
 import ProfilePage from './pages/ProfilePage.js';
 import NotFoundPage from './pages/NotFoundPage.js';
 
@@ -39,6 +41,22 @@ export default function App() {
         element={
           <ProtectedRoute>
             <AccountPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/cards"
+        element={
+          <ProtectedRoute>
+            <CardsPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/cards/:id"
+        element={
+          <ProtectedRoute>
+            <CardPage />
           </ProtectedRoute>
         }
       />
