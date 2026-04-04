@@ -10,7 +10,6 @@
     "format": "prettier --write src"
   },
   "dependencies": {
-    "@shoelace-style/shoelace": "^2.0.0",
     "@tailwindcss/vite": "^4.2.2",
     "@tanstack/react-query": "^5.0.0",
     "openapi-fetch": "^0.13.0",
@@ -27,7 +26,6 @@
     "openapi-typescript": "^7.0.0",
     "prettier": "^3.0.0",
     "typescript": "^5.4.0",
-    "vite": "^8.0.3",
-    "vite-plugin-static-copy": "^4.0.0"
+    "vite": "^8.0.3"
   }
 }
