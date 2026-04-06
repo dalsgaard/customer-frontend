@@ -7,6 +7,7 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "gen:types": "bash scripts/gen-types.sh",
+    "get-url": "aws cloudformation describe-stacks --stack-name CustomerFrontendStack --region eu-north-1 --query 'Stacks[0].Outputs[?OutputKey==`URL`].OutputValue' --output text",
     "format": "prettier --write src"
   },
   "dependencies": {
