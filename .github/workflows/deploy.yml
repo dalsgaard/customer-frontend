@@ -37,6 +37,10 @@ jobs:
         run: npm install
         working-directory: infra
 
+      - name: Bootstrap us-east-1
+        run: npx cdk bootstrap aws://${{ secrets.AWS_ACCOUNT_ID }}/us-east-1
+        working-directory: infra
+
       - name: Deploy infra
         run: npm run deploy
         working-directory: infra
